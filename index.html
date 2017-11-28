@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<head></head>
+<style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .justadayContainer {
+        display: block;
+        width: 300px;
+        min-height: 300px;
+        border-radius: 3px;
+        border: 1px solid #c6c6c6;
+        box-sizing: border-box;
+        box-shadow: 0 2px 10px #a1a1a1;
+        position: absolute;
+    }
+
+    .paging {
+        background: #d5d5d5;
+        width: 100%;
+        box-sizing: border-box;
+        height: 30px;
+        border-bottom: 1px solid #c6c6c6;
+        cursor: pointer;
+        position: relative;
+        top: 0;
+    }
+
+    .paging .pager {
+        padding: 4px;
+        height: 30px;
+        width: 30px;
+        text-align: center;
+        vertical-align: middle;
+        opacity: 0.5;
+        transition: 0.4s;
+    }
+
+    .paging .pager:hover {
+        opacity: 1;
+
+    }
+
+    .select-style:first-child {
+        margin-left: 20px;
+    }
+
+    .select-style {
+
+        padding: 0;
+        margin: 0;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        overflow: hidden;
+        background-color: #fff;
+        background: #fff;
+        position: relative;
+        float: left;
+        min-width: 81px;
+        margin-right: 2px;
+        clear: right;
+    }
+
+    .select-style:after {
+        top: 50%;
+        left: 85%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(0, 0, 0, 0);
+        border-top-color: #000000;
+        border-width: 5px;
+        margin-top: -2px;
+        z-index: 100;
+    }
+
+    .select-style select {
+        padding: 5px 8px;
+        width: 130%;
+        overflow: hidden;
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+        background-image: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .select-style select:focus {
+        outline: none;
+    }
+
+    .pager.pageLeft {
+        float: left;
+    }
+
+    .pager.pageRight {
+        float: right;
+    }
+
+    .selects {
+        background: #e4e4e4;
+        width: 100%;
+        box-sizing: border-box;
+        height: 41px;
+        border-bottom: 1px solid #c6c6c6;
+        margin-top: auto;
+        position: relative;
+        top: 0;
+    }
+
+    .daybox {
+        text-align: center;
+        padding: 5px;
+        vertical-align: middle;
+        justify-content: center;
+        border: 1px solid #c6c6c6;
+        width: 16px;
+        height: 16px;
+        float: left;
+        margin: 7px;
+        cursor: pointer;
+    }
+
+    .daybox.selected {
+        background: #d2d2d2;
+    }
+
+</style>
+
+
+<script>
+    window.JustADay = class {
+        constructor(options) {
+            this.componentId = this.generateRandomString();
+            this.options = options;
+
+            this.el = options.el;
+            this.date = options.date || new Date();
+
+            this.selectDay = this.el.querySelector('#selectDay');
+            this.selectMonth = this.el.querySelector('#selectMonth');
+            this.selectYear = this.el.querySelector('#selectYear');
+            this.daytable = this.el.querySelector('.daytable');
+
+            this.presetDate = options.presetDate;
+
+            this.dayNamesArr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            this.monthNamesArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            this.init();
+            this.render();
+        }
+
+        getDateValue() {
+            /**
+             * check all selects
+             */
+            return this.date;
+        }
+
+        generateRandomString() {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            for (var i = 0; i < 5; i++)
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+            return text;
+        };
+
+        getDaysInMonth(month, year) {
+            var date = new Date(year, month, 1);
+            var days = [];
+            while (date.getMonth() === month) {
+                days.push(new Date(date));
+                date.setDate(date.getDate() + 1);
+            }
+            return days;
+        };
+
+        getYearRange(start, end) {
+            var varFrom = start;
+            var varTo = end;
+            var result = [];
+            while (varFrom <= varTo) {
+                result.push(varFrom);
+                varFrom++;
+            }
+            return result;
+        };
+
+        init() {
+            /**
+             * Populate selects
+             */
+            this.populateDays(this.selectDay);
+            this.populateMonths(this.selectMonth);
+            this.populateYears(this.selectYear);
+
+        };
+
+        render() {
+            this.renderDays();
+        };
+
+        selectOption(id) {
+
+        };
+
+        _generateSelectOption(id, value, text) {
+            let tempEl = document.createElement('option');
+            tempEl.setAttribute('id', id);
+            tempEl.value = value;
+            tempEl.innerHTML = text;
+
+            return tempEl;
+        };
+
+        populateSelects() {
+        };
+
+        populateDays(el) {
+            var days = this.getDaysInMonth(this.date.getMonth(), this.date.getYear());
+            days.forEach((day) => {
+                el.appendChild(this._generateSelectOption(`${this.componentId}-day-${day.getDate()}`, day.getDate(), day.getDate()))
+            })
+        };
+
+        populateMonths(el) {
+            var months = this.monthNamesArr;
+            months.forEach((month, itrIdx) => {
+                el.appendChild(this._generateSelectOption(`${this.componentId}-month-${itrIdx}`, itrIdx, month))
+            });
+
+            el.addEventListener('change', (e) => {
+                this.date.setMonth(e.currentTarget.value);
+                this.renderDays();
+            });
+        }
+
+        populateYears(el) {
+            var yearRange = this.getYearRange(1900, new Date().getFullYear());
+            yearRange.forEach((year) => {
+                el.appendChild(this._generateSelectOption(`${this.componentId}-year-${year}`, year, year))
+            });
+        };
+
+        renderDays() {
+            this.daytable.innerHTML = '';
+
+            var days = this.getDaysInMonth(this.date.getMonth(), this.date.getYear());
+            for (let i = 0; i <= days.length - 1; i++) {
+                let dayBoxEl = document.createElement('div');
+                dayBoxEl.classList.add('daybox');
+                dayBoxEl.innerHTML = days[i].getDate();
+                dayBoxEl.addEventListener('click', (e) => {
+                    Array.prototype.forEach.call(this.daytable.children, (child) => {
+                        child.classList.remove('selected');
+                    });
+                    e.currentTarget.classList.toggle('selected');
+                });
+                this.daytable.appendChild(dayBoxEl);
+
+            }
+        };
+
+        eraseDays() {
+            this.daytable.innerHTML = '';
+        };
+    }
+
+</script>
+
+<body>
+
+<div class="justadayContainer">
+    <div class="paging">
+        <div class="pager pageLeft"><<</div>
+        <div class="pager pageRight">>></div>
+    </div>
+    <div class="selects">
+        <div class="select-style">
+            <select id="selectDay"></select>
+        </div>
+
+        <div class="select-style">
+            <select id="selectMonth"></select>
+        </div>
+
+        <div class="select-style">
+            <select id="selectYear"></select>
+        </div>
+    </div>
+    <div class="daytable"></div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        new JustADay({
+            el: document.querySelector('.justadayContainer')
+        });
+    });
+</script>
+</body>
+</html>
