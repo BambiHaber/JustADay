@@ -1,0 +1,19 @@
+{
+  "name": "justaday",
+  "version": "1.0.0",
+  "description": "JustADay... the date picker that gives you nothing but .... just   a    d a y ",
+  "main": "build.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BambiHaber/JustADay.git"
+  },
+  "author": "Bambi Haber",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BambiHaber/JustADay/issues"
+  },
+  "homepage": "https://github.com/BambiHaber/JustADay#readme"
+}

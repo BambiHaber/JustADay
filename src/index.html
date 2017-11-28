@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<head>
+    <title>Just a day - The date picker that provides... Just a  D A Y.</title>
+    <script src="JustADay.js"></script>
+    <link rel="stylesheet" href="_style.css" />
+</head>
+<body>
+<label for="birthDate">Whats your birthdate?</label>
+<input id="birthDate" type="text" />
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        this.justADayInstance = new JustADay({
+            el: document.querySelector('#birthDate')
+        });
+    });
+</script>
+</body>
+</html>

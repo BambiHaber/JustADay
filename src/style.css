@@ -1,0 +1,114 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.justaday.justadayContainer {
+  display: block;
+  width: 300px;
+  min-height: 300px;
+  border-radius: 3px;
+  border: 1px solid #c6c6c6;
+  box-sizing: border-box;
+  box-shadow: 0 2px 10px #a1a1a1;
+  position: absolute;
+}
+.justaday.justadayContainer .selects {
+  background: #e4e4e4;
+  width: 100%;
+  box-sizing: border-box;
+  height: 41px;
+  border-bottom: 1px solid #c6c6c6;
+  margin-top: auto;
+  position: relative;
+  top: 0;
+}
+.justaday.justadayContainer .paging {
+  background: #d5d5d5;
+  width: 100%;
+  box-sizing: border-box;
+  height: 30px;
+  border-bottom: 1px solid #c6c6c6;
+  cursor: pointer;
+  position: relative;
+  top: 0;
+}
+.justaday.justadayContainer .paging .pager {
+  padding: 4px;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  vertical-align: middle;
+  opacity: 0.5;
+  transition: 0.4s;
+}
+.justaday.justadayContainer .paging .pager.pageLeft {
+  float: left;
+}
+.justaday.justadayContainer .paging .pager.pageRight {
+  float: right;
+}
+.justaday.justadayContainer .paging .pager:hover {
+  opacity: 1;
+}
+.justaday.justadayContainer .select-style {
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: #fff;
+  background: #fff;
+  position: relative;
+  float: left;
+  min-width: 81px;
+  margin-right: 2px;
+  clear: right;
+}
+.justaday.justadayContainer .select-style:first-child :first-child {
+  margin-left: 20px;
+}
+.justaday.justadayContainer .select-style:after :after {
+  top: 50%;
+  left: 85%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(0, 0, 0, 0);
+  border-top-color: #000000;
+  border-width: 5px;
+  margin-top: -2px;
+  z-index: 100;
+}
+.justaday.justadayContainer .select-style select {
+  padding: 5px 8px;
+  width: 130%;
+  overflow: hidden;
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+  background-image: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.justaday.justadayContainer .select-style select:focus {
+  outline: none;
+}
+.justaday.justadayContainer .daytable .daybox {
+  text-align: center;
+  padding: 5px;
+  vertical-align: middle;
+  justify-content: center;
+  border: 1px solid #c6c6c6;
+  width: 16px;
+  height: 16px;
+  float: left;
+  margin: 7px;
+  cursor: pointer;
+}
+.justaday.justadayContainer .daytable .daybox.selected {
+  background: #d2d2d2;
+}

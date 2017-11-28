@@ -18,3 +18,4 @@ let birthdayPicker = new JustADay({el: document.querySelector('input.birthDate')
 
 I wouldnt suggest using this, as this is super core basic and serves a project i'm working on :).
 
+
