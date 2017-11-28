@@ -10,12 +10,11 @@ Right now this is a mess I should be putting everything in order..
 
 ### Running
 
-Just add the js with a script tag and.. 
+Just add the js with a script tag, and the compiled _style.css file.
 
 ```
 let birthdayPicker = new JustADay({el: document.querySelector('input.birthDate')})
 ```
 
-I wouldnt suggest using this, as this is super core basic and serves a project i'm working on :).
 
 
