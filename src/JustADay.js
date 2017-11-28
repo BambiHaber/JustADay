@@ -35,14 +35,29 @@ class JustADay {
         </div>
     </div>
     <div id="${this.componentId}-daytable" class="daytable"></div>
+    <div id="${this.componentId}-closeButton" class="closebutton">Ok</div>
 </div>`;
 
     }
 
+    show() {
+        this.currentPickerElement.style.display = 'block';
+    }
+
+    hide() {
+        this.currentPickerElement.style.display = 'none';
+    }
+
     onInputClick(e) {
-        let inputEl = e.currentTarget;
-        let position = this.getPosition(inputEl);
-        this.createPickerAtPosition(position);
+
+        let potentialElement = document.querySelector('#' + this.componentId + '-justday');
+        if (potentialElement) {
+            this.show()
+        } else {
+            let inputEl = e.currentTarget;
+            let position = this.getPosition(inputEl);
+            this.createPickerAtPosition(position);
+        }
     }
 
     createPickerAtPosition(position) {
@@ -61,7 +76,8 @@ class JustADay {
             selectDay: this.currentPickerElement.querySelector(`#${this.componentId}-selectDay`),
             selectMonth: this.currentPickerElement.querySelector(`#${this.componentId}-selectMonth`),
             selectYear: this.currentPickerElement.querySelector(`#${this.componentId}-selectYear`),
-            dayTable: this.currentPickerElement.querySelector(`#${this.componentId}-daytable`)
+            dayTable: this.currentPickerElement.querySelector(`#${this.componentId}-daytable`),
+            closeButton: this.currentPickerElement.querySelector(`#${this.componentId}-closeButton`)
         };
         /**
          * init & render
@@ -126,12 +142,13 @@ class JustADay {
 
 
     init(elementStack) {
-        /**
-         * Populate selects
-         */
         this.populateDays(elementStack.selectDay);
         this.populateMonths(elementStack.selectMonth);
         this.populateYears(elementStack.selectYear);
+
+        elementStack.closeButton.addEventListener('click', () => {
+            this.hide();
+        })
     }
 
 
@@ -141,13 +158,9 @@ class JustADay {
 
     _isDomElement(obj) {
         try {
-            //Using W3 DOM2 (works for FF, Opera and Chrome)
             return obj instanceof HTMLElement;
         }
         catch (e) {
-            //Browsers not supporting W3 DOM2 don't have HTMLElement and
-            //an exception is thrown and we end up here. Testing some
-            //properties that all elements have (works on IE7)
             return (typeof obj === "object") &&
                 (obj.nodeType === 1) && (typeof obj.style === "object") &&
                 (typeof obj.ownerDocument === "object");
@@ -188,9 +201,13 @@ class JustADay {
         return result;
     }
 
-    _generateSelectOption(id, value, text) {
+    _generateSelectOption(id, value, text, selected) {
         let tempEl = document.createElement('option');
         tempEl.setAttribute('id', id);
+        if (selected) {
+            tempEl.setAttribute('selected', 'selected');
+        }
+
         tempEl.value = value;
         tempEl.innerHTML = text;
 
@@ -199,27 +216,33 @@ class JustADay {
 
     populateDays(el) {
         var days = this.getDaysInMonth(this.date.getMonth(), this.date.getYear());
+        let initializedDay = this.date.getDate();
+
         days.forEach((day) => {
-            el.appendChild(this._generateSelectOption(`${this.componentId}-day-${day.getDate()}`, day.getDate(), day.getDate()))
+            el.appendChild(this._generateSelectOption(`${this.componentId}-day-${day.getDate()}`, day.getDate(), day.getDate(), (initializedDay === day.getDate())))
         })
     }
 
     populateMonths(el) {
         var months = this.monthNamesArr;
+        let initializedMonth = this.date.getMonth();
+
         months.forEach((month, itrIdx) => {
-            el.appendChild(this._generateSelectOption(`${this.componentId}-month-${itrIdx}`, itrIdx, month))
+            el.appendChild(this._generateSelectOption(`${this.componentId}-month-${itrIdx}`, itrIdx, month, (initializedMonth === itrIdx)))
         });
 
-         el.addEventListener('change', (e) => {
-             this.date.setMonth(e.currentTarget.value);
-             this.renderDays(this.elementStack.dayTable);
-         });
+        el.addEventListener('change', (e) => {
+            this.date.setMonth(e.currentTarget.value);
+            this.renderDays(this.elementStack.dayTable);
+        });
     }
 
     populateYears(el) {
         var yearRange = this.getYearRange(1900, new Date().getFullYear());
+        let initializedYear = this.date.getFullYear();
+
         yearRange.forEach((year) => {
-            el.appendChild(this._generateSelectOption(`${this.componentId}-year-${year}`, year, year))
+            el.appendChild(this._generateSelectOption(`${this.componentId}-year-${year}`, year, year, (initializedYear === year)))
         });
     }
 
@@ -232,20 +255,14 @@ class JustADay {
             dayBoxEl.classList.add('daybox');
             dayBoxEl.innerHTML = days[i].getDate();
             dayBoxEl.addEventListener('click', (e) => {
-
                 Array.prototype.forEach.call(dayTableEl.children, (child) => {
                     child.classList.remove('selected');
                 });
                 e.currentTarget.classList.toggle('selected');
+                this.date.setDate(e.currentTarget.innerHTML);
             });
             dayTableEl.appendChild(dayBoxEl);
 
         }
-    }
-
-    destructor() {
-        //remove this....
-        // remove elements
-        //event listeners badaboom
     }
 }

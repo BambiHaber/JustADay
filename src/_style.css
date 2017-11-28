@@ -2,6 +2,11 @@
   margin: 0;
   padding: 0;
 }
+.justaday {
+  transition: 1s;
+  font-family: 'Verdana', 'Arial';
+  font-size: 13px;
+}
 .justaday.justadayContainer {
   display: block;
   width: 300px;
@@ -114,4 +119,23 @@
 }
 .justaday.justadayContainer .daytable .daybox.selected {
   background: #d2d2d2;
+}
+.justaday.justadayContainer .closebutton {
+  color: white;
+  opacity: 0.8;
+  transition: 0.4s;
+  border: 1px solid #31467b;
+  background: #3965a7;
+  border-radius: 3px;
+  right: 11px;
+  bottom: 10px;
+  position: absolute;
+  width: 58px;
+  height: 16px;
+  padding: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+.justaday.justadayContainer .closebutton:hover {
+  opacity: 1;
 }
