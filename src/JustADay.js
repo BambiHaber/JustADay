@@ -37,7 +37,6 @@ class JustADay {
     <div id="${this.componentId}-daytable" class="daytable"></div>
     <div id="${this.componentId}-closeButton" class="closebutton">Ok</div>
 </div>`;
-
     }
 
     show() {
@@ -221,6 +220,8 @@ class JustADay {
         days.forEach((day) => {
             el.appendChild(this._generateSelectOption(`${this.componentId}-day-${day.getDate()}`, day.getDate(), day.getDate(), (initializedDay === day.getDate())))
         })
+
+        el.addEventListener('change', this.onChangeDaySelect.bind(this));
     }
 
     populateMonths(el) {
@@ -231,10 +232,7 @@ class JustADay {
             el.appendChild(this._generateSelectOption(`${this.componentId}-month-${itrIdx}`, itrIdx, month, (initializedMonth === itrIdx)))
         });
 
-        el.addEventListener('change', (e) => {
-            this.date.setMonth(e.currentTarget.value);
-            this.renderDays(this.elementStack.dayTable);
-        });
+        el.addEventListener('change', this.onChangeMonthSelect.bind(this));
     }
 
     populateYears(el) {
@@ -243,6 +241,34 @@ class JustADay {
 
         yearRange.forEach((year) => {
             el.appendChild(this._generateSelectOption(`${this.componentId}-year-${year}`, year, year, (initializedYear === year)))
+        });
+
+        el.addEventListener('change', this.onChangeYearSelect.bind(this));
+    }
+
+    onChangeDaySelect(e) {
+        let selectedDay = e.currentTarget.value;
+        this.markDaySelectedDayBox(selectedDay);
+        this.date.setDate(selectedDay);
+    }
+
+    onChangeMonthSelect(e) {
+        this.date.setMonth(e.currentTarget.value);
+        this.renderDays(this.elementStack.dayTable);
+    }
+
+    onChangeYearSelect(e) {
+        this.date.setFullYear(e.currentTarget.value);
+        this.renderDays(this.elementStack.dayTable);
+    }
+
+    onChangeDayBox(dayNum) {
+        this.elementStack.selectDay.value = dayNum;
+    }
+
+    markDaySelectedDayBox(dayNum) {
+        Array.prototype.forEach.call(this.elementStack.dayTable.children, (child) => {
+            child.classList.toggle('selected', child.innerHTML === dayNum)
         });
     }
 
@@ -254,11 +280,15 @@ class JustADay {
             let dayBoxEl = document.createElement('div');
             dayBoxEl.classList.add('daybox');
             dayBoxEl.innerHTML = days[i].getDate();
+            if (this.date.getDate() === days[i].getDate()) {
+                dayBoxEl.classList.add('selected');
+            }
             dayBoxEl.addEventListener('click', (e) => {
                 Array.prototype.forEach.call(dayTableEl.children, (child) => {
                     child.classList.remove('selected');
                 });
                 e.currentTarget.classList.toggle('selected');
+                this.onChangeDayBox(e.currentTarget.innerHTML);
                 this.date.setDate(e.currentTarget.innerHTML);
             });
             dayTableEl.appendChild(dayBoxEl);
