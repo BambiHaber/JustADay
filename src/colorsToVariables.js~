@@ -1,0 +1,6 @@
+var fs = require('fs');
+
+let fileName = '';
+process.argv.forEach(function (val, index, array) {
+	console.log(val.substr('--file:'));
+    });
